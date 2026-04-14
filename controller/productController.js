@@ -45,11 +45,11 @@ exports.updateProductImages = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-
-    if (product.imageUrl) {
-      const publicId = product.image.split('/').pop()(".")[0];
-      await cloudinary.uploader.destroy(`products/${publicId}`);
-    }
+    
+    // if (product.imageUrl) {
+    //   const publicId = product.image.split('/').pop()(".")[0];
+    //   await cloudinary.uploader.destroy(`products/${publicId}`);
+    // }
 
     //save new image to cloudinary
     product.imageUrl = req.file.path;
@@ -57,14 +57,14 @@ exports.updateProductImages = async (req, res) => {
     await product.save();
     res.status(200).json({ 
       message: "Image uploaded successfully", 
-      product});
+      products});
 
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 }
 
-exports. createProduct = async (req, res) => {
+exports.createProduct = async (req, res) => {
   try {
     const product = await productModel.create(req.body);
     res.status(201).json({created: product})
