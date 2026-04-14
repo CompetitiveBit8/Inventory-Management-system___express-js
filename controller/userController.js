@@ -10,8 +10,8 @@ const jwt = require('jsonwebtoken');
             res.status(400).json({message: "Please fill in the information"}) 
         }
         // Check existing email
-        const existingUser = await User.findOne({email});
-        if (existingUser){
+        const existingEmail = await User.findOne({email});
+        if (existingEmail){
             return res.status(400).json({message: "User with email already exists"}) 
         }
         // Check unique phone 
@@ -19,6 +19,7 @@ const jwt = require('jsonwebtoken');
         if (existingPhone){
             return res.status(400).json({message: "User with thesame phone number already exists"}) 
         }
+        
         // Hash and salt password
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt)

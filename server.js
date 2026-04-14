@@ -12,12 +12,13 @@ const app = express();
 app.use(express.json());
 
 //routers
-app.use('/api', userRoute);
-app.use('/api', productRoute);
+app.use('/api/', userRoute);
+app.use('/api/', productRoute);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+
 
 
 mongoose.connect(process.env.MONGO_URI).then(() => {

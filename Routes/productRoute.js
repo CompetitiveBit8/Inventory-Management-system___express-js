@@ -1,10 +1,13 @@
 const express = require('express');
 const router1 = express.Router();
-const createProduct = require('../controller/productController.js');
+const { createProduct, getProducts, updateProductImages, createProductWithEmail } = require('../controller/productController.js');
 
 const { protect } = require('../middleware/authMiddleware.js');
-const { authrizeRoles } = require('../middleware/roleMiddleware.js');
+const { authorizeRoles } = require('../middleware/roleMiddleware.js');
 
-router1.post('/products', protect, createProduct.createProduct);
+router1.post('/createproduct', createProduct);
+router1.post('/getproducts', getProducts)
+router1.patch('/upload/:id', updateProductImages)
+router1.post('/createproductwithemail', createProductWithEmail)
 
 module.exports = router1;
