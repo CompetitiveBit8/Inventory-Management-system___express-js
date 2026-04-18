@@ -5,29 +5,35 @@ const sendEmail = require('../middleware/emailSender.js');
 
 exports.createProductWithEmail = async (req, res) => {
   try {
-    const { name, price, description, imageUrl } = req.body;
-    const product = new productModel({ name, price, description, imageUrl });
-    await product.save();
-    res.status(201).json({ created: product });
+    // const { name, price, quantity, imageUrl } = req.body;
+    // const product = new productModel({ name, price, quantity, imageUrl });
+    // await product.save();
+    // res.status(201).json({ created: product });
 
     //Get all admins
-    const admins = await User.find({ role: "admin" });
-    const adminEmails = admins.map(a => a.email).join(", ");
+    // const admins = await User.find({ role: "admin" });
+    // const adminEmails = admins.map(a => a.email).join(", ");
+    // console.log(`${admins}`)
+    // // const adminEmails = "babatundeksamuel@gmail.com"
 
-    // Send email to admins
+
+    // Send email 
     const subject = "New Product Created";
     const message = 
     `<h3>New Product Alert</h3>
     <p>A new product has been created:</p>
     <ul>
-      <li><strong>Name:</strong> ${product.name}</li>
-      <li><strong>Price:</strong> $${product.price}</li>
-      <li><strong>Description:</strong> ${product.description}</li>
-      <li><strong>imageUrl:</strong> ${product.imageUrl}</li>
+      <li><strong>Name:</strong> Your products are created </li>
+      <li><strong>Price:</strong> 2000 </li>
     </ul>
     `;
+    
+    const { name, price } = req.body
+    const product = new product({ name, price })
+    await product.save();
 
-    await sendEmail(adminEmails, subject, message);
+    await sendEmail("babatundeksamuel@gmail.com", subject, message);
+    console.log("Email sent")
 
   } catch (error) {
     return res.status(400).json({ message: error.message });
@@ -76,12 +82,12 @@ exports.createProduct = async (req, res) => {
 
 exports.getProducts = async (req, res) => {
 try {
-    const product = await productModel.findById(req.params.id);
+    const product = await productModel.findOne(req.params.id);
     console.log(`${product}`)
     if (!product) {
         return res.status(400).json({ message: "Product not found" });
     }
-    res.json({got: product});
+    res.json({"Product": product});
 } catch (error) {
     return res.status(400).json({ message: error.message });
 }

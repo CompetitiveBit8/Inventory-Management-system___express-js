@@ -2,6 +2,7 @@ const { appendFile } = require('node:fs');
 const User = require('../models/userModel.js')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const sendEmail = require('../middleware/emailSender.js')
 
  exports.createUser = async (req, res) => {
     try { 
@@ -59,6 +60,22 @@ exports.login = async (req, res) => {
             process.env.JWT_SECRET,
             {expiresIn: '1d'}
         );
+
+            // Send email 
+    const subject = "New Login Alert";
+    const message = 
+    `<h3> ${user.name} </h3>
+    <p>We just noiced a new login intoyour account</p>
+    <ul>
+      <li><strong>Name:</strong> Ikeja Lagos </li>
+      <li><strong>Device: </strong> Firefox </li>
+    </ul>
+    <p> Thank you for banking with us always</p>
+    `;
+    
+
+    await sendEmail(user.email, subject, message);
+    console.log("Email sent")
 
         res.json({
             message: "Login successful",
