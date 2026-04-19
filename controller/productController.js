@@ -28,12 +28,15 @@ exports.createProductWithEmail = async (req, res) => {
     </ul>
     `;
     
-    const { name, price } = req.body
-    const product = new product({ name, price })
-    await product.save();
+    const { name, price, quantity, imageUrl } = req.body
+    console.log(name, price, quantity)
+    const newproduct = new productModel({ name, price, quantity, imageUrl })
+    await newproduct.save();
 
     await sendEmail("babatundeksamuel@gmail.com", subject, message);
     console.log("Email sent")
+
+    res.status(201).json({success: true, message: "Product created and email sent"});
 
   } catch (error) {
     return res.status(400).json({ message: error.message });
@@ -80,10 +83,10 @@ exports.createProduct = async (req, res) => {
   }
 }
 
-exports.getProducts = async (req, res) => {
+exports.getProduct = async (req, res) => {
 try {
-    const product = await productModel.findOne(req.params.id);
-    console.log(`${product}`)
+    const product = await productModel.findById(req.params.id);
+    // console.log(`${product}`)
     if (!product) {
         return res.status(400).json({ message: "Product not found" });
     }
